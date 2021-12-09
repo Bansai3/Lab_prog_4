@@ -9,7 +9,7 @@
 
 int do_show_command(char* filename) {
 	FILE* file = fopen(filename, "rb");
-	if (!file) return -1; /* TODO: напечатать ошибку*/
+	if (!file) return -1; 
 	int code = 0;
 	struct id3_record* rec = init_empty_id3record();
 	if (fill_id3record(rec, file) == 0) {
@@ -25,7 +25,7 @@ int do_show_command(char* filename) {
 
 int do_get_command(char* filename, char* fieldname) {
 	FILE* file = fopen(filename, "rb");
-	if (!file) return -1; /* TODO: напечатать ошибку*/
+	if (!file) return -1; 
 	int code = 0;
 	struct id3_record* rec = init_empty_id3record();
 	if (fill_id3record(rec, file) == 0) {
@@ -37,14 +37,14 @@ int do_get_command(char* filename, char* fieldname) {
 	else {
 		code = -2;
 	}
-	//free_id3record(rec);
+	
 	fclose(file);
 	return code;
 }
 
 int do_set_command(char* filename, char* fieldname, char* value) {
 	FILE* file = fopen(filename, "r+b");
-	if (!file) return -1; /* TODO: напечатать ошибку*/
+	if (!file) return -1;
 	int code = 0;
 	struct id3_record* rec = init_empty_id3record();
 	if (fill_id3record(rec, file) == 0) {
