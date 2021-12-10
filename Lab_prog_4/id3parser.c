@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
 #include "Header.h"
+
 
 
 typedef enum { cmd_nop, cmd_show, cmd_get, cmd_set } parsed_command_t;
@@ -85,6 +85,7 @@ int main(int argz, char* argv[])
 		printf("no or invalid command");
 		return -1;
 	}
+
 	return 0;
 }
 

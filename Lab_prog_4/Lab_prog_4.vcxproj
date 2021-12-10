@@ -146,6 +146,12 @@
   <ItemGroup>
     <ClInclude Include="Header.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="12 - I Was Made For Lovin%27 You.mp3" />
+    <Media Include="Drake - Kiki.mp3" />
+    <Media Include="HEY.mp3" />
+    <Media Include="Stray Kids - Christmas EveL.mp3" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

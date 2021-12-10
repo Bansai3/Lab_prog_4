@@ -27,7 +27,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
-      <Filter>Файлы ресурсов</Filter>
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="12 - I Was Made For Lovin%27 You.mp3">
+      <Filter>Файлы ресурсов</Filter>
+    </Media>
+    <Media Include="Drake - Kiki.mp3">
+      <Filter>Файлы ресурсов</Filter>
+    </Media>
+    <Media Include="HEY.mp3">
+      <Filter>Файлы ресурсов</Filter>
+    </Media>
+    <Media Include="Stray Kids - Christmas EveL.mp3">
+      <Filter>Файлы ресурсов</Filter>
+    </Media>
   </ItemGroup>
 </Project>

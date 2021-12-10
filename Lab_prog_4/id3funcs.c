@@ -26,6 +26,7 @@ unsigned long longtoBEsyncsafe(unsigned long val) {
 		((val & 0xFFFF8000) << 1) |
 		((val & 0xFF800000) << 1);
 
+
 	unsigned long tmp = (val & 0xFF000000) >> 24 |
 		(val & 0x00FF0000) >> 8 |
 		(val & 0x0000FF00) << 8 |
@@ -44,7 +45,7 @@ struct id3_record* init_empty_id3record() {
 }
 
 void free_id3record(struct id3_record* rec) {
-	struct id3_frame* p = rec->first; 
+	struct id3_frame* p = rec->first;
 	while (p != 0) {
 		struct id3_frame* pnext = p->next;
 		free(p);
@@ -64,13 +65,15 @@ int  fill_id3record(struct id3_record* dst, FILE* file) {
 	if (strcmp("ID3", id3_label) != 0) {
 		return -1;
 	}
+
 	dst->version[0] = fgetc(file);
 	dst->version[1] = fgetc(file);
 	dst->flags = fgetc(file);
 	int size;
 	fread(&size, 1, 4, file);
 	dst->size = syncsafeBEtolong(size);
-	id3_frame* fr = 0, * prev = 0;
+
+	struct id3_frame* fr = 0, * prev = 0;
 	while (bytes_read < dst->size) {
 		int frame_bytes_read = 0;
 
@@ -80,7 +83,7 @@ int  fill_id3record(struct id3_record* dst, FILE* file) {
 		if (tagname[0] == 0) { break; }
 
 		tagname[4] = 0;
-		fr = (id3_frame*)malloc(sizeof(id3_frame));
+		fr = (struct id3_frame*)malloc(sizeof(struct id3_frame));
 		fr->value = 0;
 		fr->next = 0;
 		strcpy(fr->id, tagname);
@@ -90,15 +93,15 @@ int  fill_id3record(struct id3_record* dst, FILE* file) {
 		fr->flags[0] = fgetc(file);
 		fr->flags[1] = fgetc(file);
 
-		bytes_read += 10; 
+		bytes_read += 10;
 
 		fr->value = (char*)malloc(fr->size);
 		fread(fr->value, 1, fr->size, file);
 		bytes_read += fr->size;
-		if (prev == 0) { 
+		if (prev == 0) {
 			dst->first = fr;
 		}
-		else { 
+		else {
 			prev->next = fr;
 		}
 		prev = fr;
@@ -118,7 +121,7 @@ int  write_id3record(struct id3_record* rec, FILE* file) {
 	int sz = longtoBEsyncsafe(rec->size);
 	fwrite(&sz, 4, 1, file);
 	bytes_written += 10;
-	id3_frame* fr = rec->first;
+	struct id3_frame* fr = rec->first;
 	while (fr != 0) {
 		fwrite(fr->id, 1, 4, file);
 		sz = longtoBEsyncsafe(fr->size);
@@ -136,7 +139,7 @@ int  write_id3record(struct id3_record* rec, FILE* file) {
 	return 0;
 }
 
-void printTextFrameValue(id3_frame* fr) {
+void printTextFrameValue(struct id3_frame* fr) {
 	int enc = fr->value[0];
 	switch (enc) {
 	case 0: for (int i = 1; i < fr->size; i++)
@@ -147,14 +150,14 @@ void printTextFrameValue(id3_frame* fr) {
 }
 
 char* getFieldValue(struct id3_record* id3, const char* field) {
-	id3_frame* fr = id3->first;
+	struct id3_frame* fr = id3->first;
 	while (fr != 0) {
 		if (strcmp(fr->id, field) == 0) {
 			printf(" %s: ", fr->id);
 			if (fr->id[0] == 'T') {
 				printTextFrameValue(fr);
 			}
-			else if (fr->id[0] == 'W') {
+			else {
 				printf("%s", fr->value);
 			}
 			printf("\n");
@@ -170,16 +173,13 @@ void show_id3record(struct id3_record* id3) {
 		printf("<empty> \n");
 		return;
 	}
-	id3_frame* fr = id3->first;
+	struct id3_frame* fr = id3->first;
 	while (fr != 0) {
 		printf(" %s: ", fr->id);
 		if (fr->id[0] == 'T') {
 			printTextFrameValue(fr);
 		}
-		else if (fr->id[0] == 'W') {
-			printf("%s", fr->value);
-		}
-		else if (fr->id[0] == 'C') {
+		else{
 			printf("%s", fr->value);
 		}
 		printf("\n");
@@ -188,22 +188,22 @@ void show_id3record(struct id3_record* id3) {
 }
 
 int setFieldValue(struct id3_record* id3, const char* field, const char* value) {
-	id3_frame* fr = id3->first;
+	struct id3_frame* fr = id3->first;
 	while (fr != 0) {
 		if (strcmp(fr->id, field) == 0) break;
 		fr = fr->next;
 	}
-	if (fr == 0) { 
-		fr->next = (id3_frame*)malloc(sizeof(id3_frame));
+	if (fr == 0) {
+		fr->next = (struct id3_frame*)malloc(sizeof(struct id3_frame));
 		fr = fr->next;
-		strncpy(fr->id, field, 4); 
+		strncpy(fr->id, field, 4);
 		fr->id[4] = '\0';
 		fr->flags[2] = '1';
 	}
 	if (fr->value != 0) free(fr->value);
 	if (fr->id[0] == 'T') {
-		fr->value = (char*)malloc(strlen(value) + 1); 
-		fr->value[0] = 0; 
+		fr->value = (char*)malloc(strlen(value) + 1);
+		fr->value[0] = 0;
 		memcpy(fr->value + 1, value, strlen(value));
 		fr->size = strlen(value) + 1;
 	}

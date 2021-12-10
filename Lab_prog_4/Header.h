@@ -3,9 +3,9 @@
 
 struct id3_frame {
 	char id[5];
-	unsigned long size; 
+	unsigned long size;
 	unsigned char flags[2];
-	unsigned char encoding; 
+	unsigned char encoding;
 	char* value;
 	struct id3_frame* next;
 };

@@ -1,0 +1,6 @@
+﻿  id3parser.c
+C:\Users\Вадим\source\repos\Lab_prog_4\Lab_prog_4\id3parser.c(33,29): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Вадим\source\repos\Lab_prog_4\Lab_prog_4\id3parser.c(43,28): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Вадим\source\repos\Lab_prog_4\Lab_prog_4\id3parser.c(50,28): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Вадим\source\repos\Lab_prog_4\Lab_prog_4\id3parser.c(57,26): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  Lab_prog_4.vcxproj -> C:\Users\Вадим\source\repos\Lab_prog_4\x64\Debug\Lab_prog_4.exe
